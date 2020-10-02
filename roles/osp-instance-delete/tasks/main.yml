@@ -1,6 +1,6 @@
 ---
 # tasks file for roles/osp-instance-delete
-  - name: Fetch Instance Info
+  - name: Fetch Instance Infomation
     os_server_info:
          cloud: openstack
          region_name: regionOne
