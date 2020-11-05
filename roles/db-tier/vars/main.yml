@@ -1,0 +1,14 @@
+---
+# vars file for roles/postgres
+postgres_users:
+  - name: appuser
+    password: redhat
+    database: app_db
+    state: present
+    priv: ALL
+
+postgres_databases:
+  - name: app_db
+    owner: tomcat
+  - name: books_store
+    owner: tomcat

@@ -10,4 +10,19 @@
     delegate_to: localhost
     with_items:
       - "{{ inventory_hostname }}"
+    when: "'winrm' not in ansible_connection"
+    tags:
+     - "Check linux system status"
+
+  - name: Check the instances status of Windows system
+    wait_for:
+      host: "{{ item }}"
+      port: 5986
+      timeout: 600
+    delegate_to: localhost
+    with_items:
+      - "{{ inventory_hostname }}"
+    when: "'winrm' in ansible_connection"
+    tags:
+     - "Check window system status"
         
