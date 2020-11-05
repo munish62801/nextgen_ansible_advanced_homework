@@ -1,6 +1,16 @@
 - name: Create Homework Assignment project
-  command: |
-    tower-cli project create --organization="{{org_name}}" -n "{{proj_name}}" --scm-type=git --scm-branch="{{scm_branch}}" --scm-url="{{scm_url}}" --scm-update-on-launch=True
+  tower_project:
+    name: "{{ proj_name }}"
+    description: "Homework Assignment Project"
+    organization: "{{ org_name }}"
+    scm_type: "git"
+    scm_url: "{{ scm_url }}"
+    scm_branch: "{{ scm_branch }}"
+    scm_update_on_launch: True
+    scm_update_cache_timeout: 60
+    tower_host: tower1.{{tower_GUID}}.example.opentlc.com
+    state: present
+
 - name: Machine Credentail to connect to workstation using openstack.pub
   tower_credential:
     name: Connect_to_workstation
@@ -9,10 +19,9 @@
     kind: ssh
     tower_host: tower1.{{tower_GUID}}.example.opentlc.com
     tower_username: admin
-    tower_password: r3dh4t1!
+    tower_password: '{{ T_PASS }}'
     ssh_key_data: "/root/.ssh/openstack.pem"
     username: cloud-user
-
 
 - name: Create Inventory
   command: |
@@ -28,9 +37,8 @@
     state: present
     tower_host: tower1.{{tower_GUID}}.example.opentlc.com
     tower_username: admin
-    tower_password: r3dh4t1!
+    tower_password: '{{ T_PASS }}'
     tower_verify_ssl: no
-
 
 - name: Associate workstation host to group 
   command: | 
@@ -43,15 +51,12 @@
     kind: ssh
     tower_host: tower1.{{tower_GUID}}.example.opentlc.com
     tower_username: admin
-    tower_password: r3dh4t1!
+    tower_password: '{{ T_PASS }}'
     tower_verify_ssl: no
     ssh_key_data: /root/.ssh/mykey.pem
     username: "{{ opentlc_login }}"
-
-
 
 - name: Remove secret
   file:
     name: /root/secret.pem
     state: absent
-    
